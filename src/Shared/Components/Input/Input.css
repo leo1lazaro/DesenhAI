@@ -1,0 +1,77 @@
+.Input-text,
+.Input-select {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+/* =========================
+   PLACEHOLDER
+========================= */
+.Input-text::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+/* =========================
+   HOVER
+========================= */
+.Input-text:hover,
+.Input-select:hover {
+  border-color: #9ca3af;
+}
+
+/* =========================
+   FOCUS (estilo moderno azul)
+========================= */
+.Input-text:focus,
+.Input-select:focus {
+  border-color: #1f78d1;
+  box-shadow: 0 0 0 3px rgba(31, 120, 209, 0.15);
+}
+
+/* =========================
+   SELECT (setinha moderna)
+========================= */
+.Input-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg fill='%236b7280' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 7.5L10 12l4.5-4.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 14px;
+  padding-right: 34px;
+  cursor: pointer;
+}
+
+/* =========================
+   ESTADO DISABLED (opcional)
+========================= */
+.Input-text:disabled,
+.Input-select:disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+  border-color: #e5e7eb;
+}
+
+/* =========================
+   ANIMAÇÃO SUAVE DE ENTRADA (opcional UI mais premium)
+========================= */
+.Input-text,
+.Input-select {
+  transform: translateY(0);
+}
+
+.Input-text:focus,
+.Input-select:focus {
+  transform: translateY(-1px);
+}

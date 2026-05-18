@@ -1,0 +1,65 @@
+.Card-container {
+  position: relative;
+
+  width: 100%;
+  max-width: 420px;
+
+  background: #ffffff;
+
+  border-radius: 10px;
+
+  padding: 50px 20px 20px;
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+
+  border: 1px solid #e6e6e6;
+}
+
+/* =========================
+   TITLE BASE (ABA VAZANDO)
+========================= */
+.Card-title {
+  position: absolute;
+
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 190px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+
+  color: #ffffff;
+
+  background: linear-gradient(180deg, #3aa0ff, #1f78d1);
+
+  border-radius: 6px;
+
+  box-shadow: 0 10px 18px rgba(31, 120, 209, 0.35);
+
+  z-index: 10;
+}
+
+/* =========================
+   ALIGN LEFT (mantido caso queira usar depois)
+========================= */
+.Card-title.left {
+  left: 16px;
+  transform: none;
+}
+
+/* =========================
+   ALIGN RIGHT (mantido caso queira usar depois)
+========================= */
+.Card-title.right {
+  left: auto;
+  right: 16px;
+  transform: none;
+}
