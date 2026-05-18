@@ -27,13 +27,10 @@ const Carta: React.FC<CartaProps> = ({ nome, tema, src, delay = 0, oculta = fals
   const temaLabel = getTemaLabel(tema);
 
   const resolveSrc = (path: string) => {
-    if (path.startsWith('..') || path.startsWith('imagensDisney')) {
-      const finalPath = path.startsWith('imagensDisney') ? `../../../assets/${path}` : path;
-      try {
-        return new URL(finalPath, import.meta.url).href;
-      } catch (e) {
-        return path;
-      }
+    if (path.includes('imagensDisney')) {
+      const index = path.indexOf('imagensDisney');
+      const cleanPath = path.substring(index);
+      return `/assets/${cleanPath}`;
     }
     return path;
   };
