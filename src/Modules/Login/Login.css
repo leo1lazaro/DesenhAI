@@ -1,0 +1,117 @@
+.Login-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fdf4ff;
+    background-image: 
+        radial-gradient(#eecff1 1px, transparent 0),
+        radial-gradient(#eecff1 1px, transparent 0);
+    background-size: 40px 40px;
+    background-position: 0 0, 20px 20px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.Login-content {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+}
+
+.Login-logo-area {
+    text-align: center;
+    transform: rotate(-2deg);
+}
+
+.Login-logo-title {
+    font-size: 56px;
+    font-weight: 900;
+    color: #3b82f6;
+    margin: 0;
+    text-shadow: 4px 4px 0px #000;
+    -webkit-text-stroke: 2px #000;
+}
+
+.Login-logo-subtitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-top: -8px;
+    background: #fde047;
+    padding: 4px 12px;
+    border: 3px solid #000;
+    border-radius: 8px;
+}
+
+.Login-card-wrapper {
+    width: 100%;
+    transform: rotate(1deg);
+}
+
+/* Customizing shared components within Login */
+.Login-card-wrapper .Card-container {
+    padding: 40px 24px 32px;
+    border: 4px solid #000;
+    border-radius: 24px;
+    box-shadow: 12px 12px 0px #000;
+    background: #fff;
+    max-width: none;
+}
+
+.Login-card-wrapper .Card-title {
+    display: none; /* We use our own logo/title */
+}
+
+.Login-card-wrapper .Button-container {
+    height: 54px;
+    font-size: 18px;
+    background: #3b82f6;
+    border: 3px solid #000;
+    border-radius: 12px;
+    box-shadow: 6px 6px 0px #000;
+    transition: all 0.1s ease;
+}
+
+.Login-card-wrapper .Button-container:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0px #000;
+    filter: none;
+}
+
+.Login-card-wrapper .Button-container:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0px 0px 0px #000;
+}
+
+.Login-card-wrapper .Input-container {
+    height: 50px;
+    border: 3px solid #000 !important;
+    border-radius: 12px !important;
+    font-size: 16px !important;
+    padding: 0 16px !important;
+}
+
+.Login-card-wrapper .Label-texto {
+    font-weight: 800 !important;
+    font-size: 16px !important;
+    color: #1e293b !important;
+}
+
+.Login-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.Login-decoration {
+    position: absolute;
+    z-index: 1;
+    opacity: 0.2;
+    pointer-events: none;
+}
