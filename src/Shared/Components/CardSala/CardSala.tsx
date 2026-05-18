@@ -41,9 +41,9 @@ const CardSala: React.FC<CardSalaProps> = ({
           <Hash size={14} />
           <span>{id}</span>
         </div>
-        <div className="CardSala-players">
+        <div className={`CardSala-players ${players >= maxPlayers ? 'full' : ''}`}>
           <Users size={14} />
-          <span>{players}/{maxPlayers}</span>
+          <span>{players >= maxPlayers ? 'LOTADA' : `${players}/${maxPlayers}`}</span>
         </div>
       </div>
 
@@ -58,8 +58,13 @@ const CardSala: React.FC<CardSalaProps> = ({
         </div>
       </div>
 
-      <button className="CardSala-button" id={`btn-join-${id}`} onClick={onJoin}>
-        Entrar na Sala
+      <button 
+        className={`CardSala-button ${players >= maxPlayers ? 'full' : ''}`} 
+        id={`btn-join-${id}`} 
+        onClick={onJoin}
+        disabled={players >= maxPlayers}
+      >
+        {players >= maxPlayers ? 'SALA CHEIA' : 'ENTRAR NA SALA'}
       </button>
     </div>
   );

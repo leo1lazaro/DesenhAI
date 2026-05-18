@@ -9,7 +9,7 @@ import { Temas } from '../../Shared/Constants/Temas';
 import { motion } from 'motion/react';
 
 const Lobby: React.FC = () => {
-  const { salas, joinRoom, createRoom } = useLobbyWS();
+  const { salas, joinRoom, createRoom, error, setError, isJoining, pendingRoomId, setPendingRoomId } = useLobbyWS();
   
   const {
     isModalCreateOpen,
@@ -23,9 +23,30 @@ const Lobby: React.FC = () => {
     salas: roomsToRender
   } = useLobby(salas);
 
+  // Efeito para navegar se o join for bem sucedido
+  React.useEffect(() => {
+    if (isJoining && pendingRoomId && !error) {
+        // Se após 500ms não houver erro, assumimos sucesso
+        const timer = setTimeout(() => {
+            if (!error) {
+                navigateToGame(pendingRoomId);
+                setPendingRoomId(null);
+            }
+        }, 500);
+        return () => clearTimeout(timer);
+    }
+    
+    // Se o isJoining ficou false e não tem erro, mas ainda temos um pendingRoomId
+    // Provavelmente o servidor confirmou o sucesso
+    if (!isJoining && pendingRoomId && !error) {
+        navigateToGame(pendingRoomId);
+        setPendingRoomId(null);
+    }
+  }, [isJoining, pendingRoomId, error, navigateToGame, setPendingRoomId]);
+
   const handleJoinSala = (id: string) => {
+    // Apenas iniciamos o processo de entrar
     joinRoom(id);
-    navigateToGame(id);
   };
 
   const handleCreateRoom = () => {
@@ -71,6 +92,27 @@ const Lobby: React.FC = () => {
       >
         <Sparkles size={80} color="#fbbf24" strokeWidth={3} />
       </motion.div>
+
+      {error && (
+        <Modal
+          isOpen={!!error}
+          onClose={() => setError(null)}
+          title="Erro ao entrar"
+          actionLabel="Entendi"
+          onAction={() => setError(null)}
+        >
+          <div className="Lobby-error-message">
+            <p>{error}</p>
+          </div>
+        </Modal>
+      )}
+
+      {isJoining && (
+        <div className="Lobby-loading-overlay">
+          <div className="Lobby-loader"></div>
+          <p>Entrando na sala...</p>
+        </div>
+      )}
 
       <motion.header 
         className="Lobby-header"

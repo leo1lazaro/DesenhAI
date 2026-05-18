@@ -40,12 +40,20 @@ export const SOCKET_EVENTS = {
     ROOM_START_GAME: "room:iniciarGame",
     ROOM_ROUND_NEXT: "room:proximoRound",
     ROOM_STATE_UPDATE: "room:atualizaRound",
+    ROOM_LEAVE: "room:sair",
     /*
     |--------------------------------------------------------------------------
     | Sala
     |--------------------------------------------------------------------------
     */
     LOBBY_JOIN: "lobby:join",
-    LOBBY_UPDATE: "lobby:update"
+    LOBBY_UPDATE: "lobby:update",
+
+    /*
+    |--------------------------------------------------------------------------
+    | Mensagem direta
+    |--------------------------------------------------------------------------
+    */
+    MENSAGEM_DIRETA: "mensagem:privada"
 
 } as const;

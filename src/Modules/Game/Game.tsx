@@ -1,9 +1,9 @@
 import './Game.css';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Palette, Pencil, Brush, Sparkles, Play } from 'lucide-react';
+import { Palette, Pencil, Brush, Sparkles, Play, LogOut, Hash } from 'lucide-react';
 import Chat from '../../Shared/Components/Chat/Chat';
 import Canvas from '../../Shared/Components/Canvas/Canvas';
 import Carta from '../../Shared/Components/Carta/Carta';
@@ -17,12 +17,13 @@ import { socket } from '../../App/WebSocket/Socket';
 
 const Game = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const roomId = useMemo(() => {
     const params = new URLSearchParams(location.search);
     return params.get('room');
   }, [location.search]);
 
-  const { room, startGame } = useRoomWS(roomId);
+  const { room, startGame, leaveRoom } = useRoomWS(roomId);
 
   useEffect(() => {
     if (room) {
@@ -134,6 +135,11 @@ const Game = () => {
     return off;
   }, [clearCanvas, onClear]);
 
+  const handleLeave = () => {
+    leaveRoom();
+    navigate('/lobby');
+  };
+
   return (
     <section className='Game-container'>
       <AnimatePresence>
@@ -201,6 +207,13 @@ const Game = () => {
 
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
           {room?.started && (
+            <div className="Game-round-info">
+              <Hash size={18} />
+              <span>ROUND {room?.round}</span>
+            </div>
+          )}
+
+          {room?.started && (
             <Timer duration={60} resetKey={room?.currentPlayerId} />
           )}
 
@@ -211,6 +224,14 @@ const Game = () => {
           >
             <Play size={20} fill={(!canStart || room?.started) ? "#cbd5e1" : "white"} />
             {room?.started ? "PARTIDA EM ANDAMENTO" : "INICIAR PARTIDA"}
+          </button>
+
+          <button 
+            className="Game-btn-leave" 
+            onClick={handleLeave}
+            title="Sair da Sala"
+          >
+            <LogOut size={24} />
           </button>
         </div>
       </motion.header>

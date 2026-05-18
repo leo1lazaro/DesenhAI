@@ -21,18 +21,20 @@ export const useRoomWS = (roomId: string | null = null) => {
 
         socket.on("connect", onConnect);
 
-        const onRoomData = (roomData: Sala) => {
+        const onRoomData = (roomData: Partial<Sala>) => {
             console.log("Room updated:", roomData);
-            setRoom(roomData);
+            setRoom(prev => prev ? { ...prev, ...roomData } : roomData as Sala);
         };
 
         socket.on(SOCKET_EVENTS.ROOM_UPDATED, onRoomData);
         socket.on(SOCKET_EVENTS.ROOM_STATE_UPDATE, onRoomData);
+        socket.on(SOCKET_EVENTS.ROOM_ROUND_NEXT, onRoomData);
 
         return () => {
             socket.off("connect", onConnect);
             socket.off(SOCKET_EVENTS.ROOM_UPDATED, onRoomData);
             socket.off(SOCKET_EVENTS.ROOM_STATE_UPDATE, onRoomData);
+            socket.off(SOCKET_EVENTS.ROOM_ROUND_NEXT, onRoomData);
         };
     }, [roomId]);
 
@@ -48,9 +50,16 @@ export const useRoomWS = (roomId: string | null = null) => {
         }
     };
 
+    const leaveRoom = () => {
+        if (roomId) {
+            socket.emit(SOCKET_EVENTS.ROOM_LEAVE, { roomId });
+        }
+    };
+
     return {
         room,
         startGame,
-        updateRoom
+        updateRoom,
+        leaveRoom
     };
 };

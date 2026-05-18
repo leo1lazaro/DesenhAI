@@ -1,6 +1,7 @@
-import "./Chat.css";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { SendHorizontal } from "lucide-react";
+import "./Chat.css";
 
 export interface ChatMessage {
     id: string;
@@ -21,6 +22,16 @@ interface Props {
 const Chat = ({messages,onlineUsers,isConnected,typingUser,onSendMessage,onTyping}: Props) => {
 
     const [message, setMessage] = useState("");
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
     const handleSend = () => {
         if (!message.trim()) return;
         onSendMessage(message);
@@ -49,10 +60,6 @@ const Chat = ({messages,onlineUsers,isConnected,typingUser,onSendMessage,onTypin
 
                 </div>
 
-                <span className="Chat-online-users">
-                    {onlineUsers} online
-                </span>
-
             </header>
 
             {/* MESSAGES */}
@@ -80,6 +87,7 @@ const Chat = ({messages,onlineUsers,isConnected,typingUser,onSendMessage,onTypin
                         );
                     })}
                 </AnimatePresence>
+                <div ref={messagesEndRef} />
             </div>
 
             {/* TYPING */}
@@ -125,8 +133,9 @@ const Chat = ({messages,onlineUsers,isConnected,typingUser,onSendMessage,onTypin
                 <button
                     className="Chat-button"
                     onClick={handleSend}
+                    title="Enviar"
                 >
-                    Enviar
+                    <SendHorizontal size={20} />
                 </button>
 
             </div>

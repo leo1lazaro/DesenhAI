@@ -1,4 +1,5 @@
 import React from 'react';
+import { getFallbackImageUrl } from '../../Utils/imageUtils';
 import './Carta.css';
 import { motion } from 'motion/react';
 
@@ -27,11 +28,6 @@ const Carta: React.FC<CartaProps> = ({ nome, tema, src, delay = 0, oculta = fals
   const temaLabel = getTemaLabel(tema);
 
   const resolveSrc = (path: string) => {
-    if (path.includes('imagensDisney')) {
-      const index = path.indexOf('imagensDisney');
-      const cleanPath = path.substring(index);
-      return `/assets/${cleanPath}`;
-    }
     return path;
   };
 
@@ -45,10 +41,9 @@ const Carta: React.FC<CartaProps> = ({ nome, tema, src, delay = 0, oculta = fals
 
   const handleImageError = () => {
     if (!hasFallback) {
-      if (imageUrl.includes('.png')) {
-        setImageUrl(imageUrl.replace('.png', '.jpg'));
-      } else if (imageUrl.includes('.jpg')) {
-        setImageUrl(imageUrl.replace('.jpg', '.png'));
+      const fallbackUrl = getFallbackImageUrl(imageUrl);
+      if (fallbackUrl) {
+        setImageUrl(fallbackUrl);
       }
       setHasFallback(true);
     }
