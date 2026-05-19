@@ -54,13 +54,14 @@ const Canvas = ({
                 ref={canvasRef}
                 width={width}
                 height={height}
-                onMouseDown={disabled ? undefined : startDrawing}
-                onMouseMove={disabled ? undefined : draw}
-                onMouseUp={disabled ? undefined : stopDrawing}
-                onMouseLeave={disabled ? undefined : stopDrawing}
+                onPointerDown={disabled ? undefined : startDrawing}
+                onPointerMove={disabled ? undefined : draw}
+                onPointerUp={disabled ? undefined : stopDrawing}
+                onPointerLeave={disabled ? undefined : stopDrawing}
                 style={{ 
                     cursor: disabled ? 'default' : undefined,
-                    pointerEvents: disabled ? 'none' : 'auto'
+                    pointerEvents: disabled ? 'none' : 'auto',
+                    touchAction: 'none'
                 }}
             />
         </section>

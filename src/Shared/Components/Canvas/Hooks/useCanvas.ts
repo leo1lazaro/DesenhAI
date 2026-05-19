@@ -42,15 +42,37 @@ export const useCanvas = ({ width, height, emitter }: UseCanvasProps) => {
 
     /*
     |--------------------------------------------------------------------------
+    | COORDINATES HELPER
+    |--------------------------------------------------------------------------
+    */
+    const getCoordinates = (e: React.PointerEvent<HTMLCanvasElement>) => {
+        const canvas = canvasRef.current;
+        if (!canvas) return { x: 0, y: 0 };
+        const rect = canvas.getBoundingClientRect();
+        
+        // Calculate based on the scale of the canvas (if CSS width/height differs from internal width/height)
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+
+        return {
+            x: (e.clientX - rect.left) * scaleX,
+            y: (e.clientY - rect.top) * scaleY
+        };
+    };
+
+    /*
+    |--------------------------------------------------------------------------
     | START DRAW
     |--------------------------------------------------------------------------
     */
-    const startDrawing = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
+    const startDrawing = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
         const ctx = ctxRef.current;
         if (!ctx) return;
 
-        const x = e.nativeEvent.offsetX;
-        const y = e.nativeEvent.offsetY;
+        // Capture the pointer to continue receiving events even if it leaves the element
+        e.currentTarget.setPointerCapture(e.pointerId);
+
+        const { x, y } = getCoordinates(e);
 
         ctx.beginPath();
         ctx.moveTo(x, y);
@@ -64,14 +86,13 @@ export const useCanvas = ({ width, height, emitter }: UseCanvasProps) => {
         });
     }, [emitter]);
 
-    const draw = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
+    const draw = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
         if (!isDrawing.current) return;
 
         const ctx = ctxRef.current;
         if (!ctx) return;
 
-        const x = e.nativeEvent.offsetX;
-        const y = e.nativeEvent.offsetY;
+        const { x, y } = getCoordinates(e);
 
         ctx.lineTo(x, y);
         ctx.stroke();
@@ -83,7 +104,7 @@ export const useCanvas = ({ width, height, emitter }: UseCanvasProps) => {
         });
     }, [emitter]);
 
-    const stopDrawing = useCallback((e?: React.MouseEvent<HTMLCanvasElement>) => {
+    const stopDrawing = useCallback((e?: React.PointerEvent<HTMLCanvasElement>) => {
         const ctx = ctxRef.current;
         if (!ctx) return;
 
@@ -91,10 +112,11 @@ export const useCanvas = ({ width, height, emitter }: UseCanvasProps) => {
         isDrawing.current = false;
 
         if (e) {
+            const { x, y } = getCoordinates(e);
             emitter?.({
                 type: "end",
-                x: e.nativeEvent.offsetX,
-                y: e.nativeEvent.offsetY
+                x,
+                y
             });
         }
     }, [emitter]);
